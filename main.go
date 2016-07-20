@@ -35,13 +35,20 @@ func main() {
 	log.Printf("Using log file: %s", configFile)
 
 	cloudwatch.HandleFunc(func(evt *cloudwatch.Event, ctx *apex.Context) error {
+		// set log prefix to the ID
+		log.SetPrefix(fmt.Sprintf("%s ", evt.ID))
+
 		if evt.Source != "aws.autoscaling" {
-			log.Printf("Not an autoscaling event")
-			return errors.New("Not an autoscaling event")
+			msg := fmt.Sprintf("Not an expected AutoScaling event, got %q instead.", evt.Source)
+			log.Println(msg)
+			return errors.New(msg)
 		}
+
+		log.Printf("Loading configuration file: %v", configFile)
 
 		config, err := lambda.LoadConfig(configFile)
 		if err != nil {
+
 			log.Printf("Config error: %v", err)
 			return err
 		}
@@ -58,6 +65,10 @@ func main() {
 			return err
 		}
 
+		log.Printf("Found IP address for instance %q: %v", details.EC2InstanceID, ip)
+
+		log.Printf("Pulling CA certificate from '%s/ca.pem'", config.Bucket)
+
 		body, err := aws.GetObject(&aws.ObjectConfig{
 			Bucket: config.Bucket,
 			Key:    "ca.pem",
@@ -73,10 +84,11 @@ func main() {
 			return err
 		}
 
+		log.Printf("Generating new certificate for %q", details.EC2InstanceID)
 		certGen := cert.NewX509CertGenerator()
 		cert, err := certGen.GenerateCert(&cert.Options{
 			Hosts:        []string{ip},
-			Org:          "kube",
+			Org:          config.EnvironmentName,
 			RawCAKeyPair: caBytes,
 			Bits:         2048,
 		})
@@ -92,6 +104,7 @@ func main() {
 
 		certRS := bytes.NewReader(certBytes)
 
+		log.Printf("Storing certificate for %q as: %s/%s.pem", details.EC2InstanceID, config.Bucket, details.EC2InstanceID)
 		if err := aws.PutObject(&aws.ObjectConfig{
 			Body:     certRS,
 			Bucket:   config.Bucket,

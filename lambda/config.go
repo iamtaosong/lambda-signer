@@ -8,8 +8,9 @@ import (
 
 // Config holder object
 type Config struct {
-	Bucket   string `json:"bucket"`
-	KMSKeyID string `json:"kms_key_id"`
+	Bucket          string `json:"bucket"`
+	EnvironmentName string `json:"environment_name"`
+	KMSKeyID        string `json:"kms_key_id"`
 }
 
 // ReadFromFile reads a file from disk
