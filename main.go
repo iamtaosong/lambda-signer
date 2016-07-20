@@ -85,8 +85,7 @@ func main() {
 		}
 
 		log.Printf("Generating new certificate for %q", details.EC2InstanceID)
-		certGen := cert.NewX509CertGenerator()
-		cert, err := certGen.GenerateCert(&cert.Options{
+		keyPair, err := cert.GenerateX509KeyPair(&cert.Options{
 			Hosts:        []string{ip},
 			Org:          config.EnvironmentName,
 			RawCAKeyPair: caBytes,
@@ -96,17 +95,17 @@ func main() {
 			return err
 		}
 
-		certBytes, _ := ioutil.ReadAll(cert)
+		keyPairBytes, _ := ioutil.ReadAll(keyPair)
 		if err != nil {
 			log.Printf("Unable to read cert: %v", err)
 			return err
 		}
 
-		certRS := bytes.NewReader(certBytes)
+		keyPairRS := bytes.NewReader(keyPairBytes)
 
 		log.Printf("Storing certificate for %q as: %s/%s.pem", details.EC2InstanceID, config.Bucket, details.EC2InstanceID)
 		if err := aws.PutObject(&aws.ObjectConfig{
-			Body:     certRS,
+			Body:     keyPairRS,
 			Bucket:   config.Bucket,
 			KMSKeyID: config.KMSKeyID,
 			Key:      fmt.Sprintf("%s.pem", details.EC2InstanceID),
