@@ -1,0 +1,4 @@
+{
+  "bucket": "test-kms-certs",
+  "kms_key_id": "arn:aws:kms:eu-west-1:151099681222:key/531e9039-bef1-4f9e-abcd-c3873c3c4361"
+}
