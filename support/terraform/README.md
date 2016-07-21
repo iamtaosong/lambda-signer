@@ -1,14 +1,14 @@
  Module usage:
 
-   module "signer" {
-     source "github.com/sthulb/signer-lambda/support/terraform"
+     module "signer" {
+       source "github.com/sthulb/signer-lambda/support/terraform"
 
-     aws_access_key_id     = "${var.aws_access_key_id}"
-     aws_secret_access_key = "${var.aws_secret_access_key}"
-     aws_region            = "eu-west-1"
+       aws_access_key_id     = "${var.aws_access_key_id}"
+       aws_secret_access_key = "${var.aws_secret_access_key}"
+       aws_region            = "eu-west-1"
 
-     filename = "../../build/archive.zip"
-   }
+       filename = "../../build/archive.zip"
+     }
 
 
 ## Inputs
