@@ -27,4 +27,5 @@ The binary should be shipped with a `config.json`
 }
 ```
 
-
+## Deploy
+A [terraform module](support/terraform/README.md) has been created that will help you manage deployments of this application.
