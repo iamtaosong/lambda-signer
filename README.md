@@ -3,6 +3,10 @@
 Auto signs certificates for EC2 instances. Credit to [Steven Jack](https://github.com/stevenjack)
 for suggesting it.
 
+## Design
+The application is shipped using AWS Lambda. It uses KMS to store the certificate files encrypted at rest. This probably isn't the best way to
+store the certificates.
+
 ## Build
 The project can be built with `go build -o main .`
 
