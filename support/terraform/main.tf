@@ -8,7 +8,8 @@
  *     aws_secret_access_key = "${var.aws_secret_access_key}"
  *     aws_region            = "eu-west-1"
  *
- *     filename = "../../build/archive.zip"
+ *     bucket_name = "certs"
+ *     filename    = "../../build/archive.zip"
  *   }
  */
 
@@ -16,6 +17,11 @@ provider "aws" {
   access_key = "${var.aws_access_key_id}"
   secret_key = "${var.aws_secret_access_key}"
   region     = "${var.aws_region}"
+}
+
+resource "aws_s3_bucket" "bucket" {
+  bucket = "${var.bucket_name}"
+  acl    = "private"
 }
 
 resource "aws_kms_key" "key" {
