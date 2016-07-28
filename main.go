@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"net/url"
 	"os"
 
 	"github.com/apex/go-apex"
@@ -46,10 +47,26 @@ func main() {
 
 		log.Printf("Loading configuration file: %v", configFile)
 
-		config, err := lambda.LoadConfig(configFile)
+		configLoader, err := lambda.LoadConfig(configFile)
 		if err != nil {
-
 			log.Printf("Config error: %v", err)
+			return err
+		}
+
+		u, err := url.Parse(configLoader.ConfigURL)
+		if err != nil {
+			log.Printf("Unable to parse %q: %v", configLoad.ConfigURL, err)
+			return err
+		}
+
+		configR, err := aws.GetObject(aws.ObjectConfig{
+			Bucket: u.Host,
+			Key:    u.Path,
+			Region: evt.Region,
+		})
+
+		config := &lambda.Config{}
+		if err := config.ReadFromReader(configR); err != nil {
 			return err
 		}
 
