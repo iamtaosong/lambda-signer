@@ -49,6 +49,9 @@ type Config struct {
 // ReadFromFile reads a file from disk
 func (c *Config) ReadFromReader(r io.Reader) error {
 	config, err := ioutil.ReadAll(r)
+	if err != nil {
+		return err
+	}
 
 	if err := json.Unmarshal(config, c); err != nil {
 		return err

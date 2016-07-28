@@ -55,11 +55,11 @@ func main() {
 
 		u, err := url.Parse(configLoader.ConfigURL)
 		if err != nil {
-			log.Printf("Unable to parse %q: %v", configLoad.ConfigURL, err)
+			log.Printf("Unable to parse %q: %v", configLoader.ConfigURL, err)
 			return err
 		}
 
-		configR, err := aws.GetObject(aws.ObjectConfig{
+		configR, err := aws.GetObject(&aws.ObjectConfig{
 			Bucket: u.Host,
 			Key:    u.Path,
 			Region: evt.Region,
