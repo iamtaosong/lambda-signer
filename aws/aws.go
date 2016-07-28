@@ -3,7 +3,6 @@ package aws
 import (
 	"errors"
 	"io"
-	// "log"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
