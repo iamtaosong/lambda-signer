@@ -8,7 +8,7 @@ build:
 
 config:
 	cp support/config.tpl ${BUILD_DIR}/config.json
-	sed -i '' -e "s/__BUCKET__/${BUCKET}/g; s/__DOMAIN__/${DOMAIN}/g; s/__ENVIRONMENT__/${ENVIRONMENT}/g" ${BUILD_DIR}/config.json
+	sed -i '' -e "s;__CONFIG_URL__;${CONFIG_URL};g" ${BUILD_DIR}/config.json
 
 package:
 	mkdir -p ${BUILD_DIR}
