@@ -128,7 +128,7 @@ CONFIG
 }
 
 resource "aws_s3_bucket_object" "config" {
-  bucket = "${var.function_name}"
-  key    = "config.json"
-  source = "${data.template_file.config.rendered}"
+  bucket  = "${var.function_name}"
+  key     = "config.json"
+  content = "${data.template_file.config.rendered}"
 }
