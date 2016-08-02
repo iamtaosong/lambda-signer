@@ -47,7 +47,7 @@ func main() {
 		}
 
 		ip, err := aws.InstanceIP(details.EC2InstanceID, evt.Region)
-		if err != nil {
+		if len(ip) == 0 || err != nil {
 			log.Printf("Unable to find instance IP %q: %v", details.EC2InstanceID, err)
 			return err
 		}
@@ -74,7 +74,7 @@ func main() {
 		log.Printf("Generating new certificate for %q", details.EC2InstanceID)
 		keyPair, err := cert.GenerateX509KeyPair(&cert.Options{
 			Hosts:        []string{ip},
-			Org:          config.EnvironmentName,
+			Org:          ctx.FunctionName,
 			RawCAKeyPair: caBytes,
 			Bits:         2048,
 		})
