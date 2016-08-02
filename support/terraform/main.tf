@@ -114,7 +114,7 @@ resource "aws_s3_bucket" "bucket" {
   acl    = "private"
 }
 
-data "template_file" "config" {
+resource "template_file" "config" {
   template = <<CONFIG
 {
   "kms_key_id": "${kms_key_id}"
@@ -129,5 +129,5 @@ CONFIG
 resource "aws_s3_bucket_object" "config" {
   bucket  = "${var.function_name}"
   key     = "config.json"
-  content = "${data.template_file.config.rendered}"
+  content = "${template_file.config.rendered}"
 }
