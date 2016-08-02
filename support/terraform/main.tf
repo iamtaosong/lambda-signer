@@ -8,8 +8,8 @@
  *     aws_secret_access_key = "${var.aws_secret_access_key}"
  *     aws_region            = "eu-west-1"
  *
- *     bucket_name = "certs"
- *     filename    = "../../build/archive.zip"
+ *     function_name = "signer-lve"
+ *     filename      = "archive.zip"
  *   }
  */
 
@@ -19,18 +19,13 @@ provider "aws" {
   region     = "${var.aws_region}"
 }
 
-resource "aws_s3_bucket" "bucket" {
-  bucket = "${var.bucket_name}"
-  acl    = "private"
-}
-
 resource "aws_kms_key" "key" {
   description             = "Signer key holder"
   deletion_window_in_days = 7
 }
 
 resource "aws_kms_alias" "alias" {
-  name          = "alias/signer-keys"
+  name          = "alias/${var.function_name}-keys"
   target_key_id = "${aws_kms_key.key.key_id}"
 }
 
@@ -40,7 +35,7 @@ resource "aws_cloudwatch_event_target" "target" {
 }
 
 resource "aws_cloudwatch_event_rule" "rule" {
-  name        = "signer"
+  name        = "${var.function_name}"
   description = "DNS Lambda rule"
 
   event_pattern = <<PATTERN
@@ -65,7 +60,7 @@ resource "aws_lambda_permission" "allow_cloudwatch" {
 }
 
 resource "aws_iam_role" "role" {
-  name = "signer_${var.aws_region}"
+  name = "${var.function_name}-${var.aws_region}"
 
   assume_role_policy = <<EOF
 {
@@ -108,9 +103,14 @@ EOF
 
 resource "aws_lambda_function" "signer" {
   filename         = "${var.filename}"
-  function_name    = "signer"
+  function_name    = "${var.function_name}"
   role             = "${aws_iam_role.role.arn}"
   handler          = "index.handle"
   runtime          = "nodejs4.3"
   source_code_hash = "${base64sha256(file(var.filename))}"
+}
+
+resource "aws_s3_bucket" "bucket" {
+  bucket = "${var.function_name}"
+  acl    = "private"
 }

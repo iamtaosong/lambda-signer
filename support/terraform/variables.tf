@@ -13,12 +13,12 @@ variable "aws_region" {
   type        = "string"
 }
 
-variable "bucket_name" {
-  description = "Name of the bucket to store keys"
+variable "filename" {
+  description = "Filename of lambda bundle"
   type        = "string"
 }
 
-variable "filename" {
-  description = "Filename of lambda bundle"
+variable "function_name" {
+  description = "Name of lambda bundle"
   type        = "string"
 }
