@@ -123,7 +123,7 @@ data "template_file" "config" {
 CONFIG
 
   vars {
-    "kms_key_id" = "${aws_kms_key.key_arn}"
+    "kms_key_id" = "${aws_kms_key.key.arn}"
   }
 }
 
