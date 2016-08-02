@@ -114,3 +114,15 @@ resource "aws_s3_bucket" "bucket" {
   bucket = "${var.function_name}"
   acl    = "private"
 }
+
+data "template_file" "config" {
+  template = <<CONFIG
+{
+  "kms_key_id": "${kms_key_id}"
+}
+CONFIG
+
+  vars {
+    "kms_key_id" = "${aws_kms_key.key_arn}"
+  }
+}
