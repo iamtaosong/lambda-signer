@@ -79,6 +79,7 @@ func main() {
 			Bits:         2048,
 		})
 		if err != nil {
+			log.Printf("Unable to generate certificate for %q: %v", details.EC2InstanceID, err)
 			return err
 		}
 
@@ -98,6 +99,7 @@ func main() {
 			Key:      fmt.Sprintf("%s.pem", details.EC2InstanceID),
 			Region:   evt.Region,
 		}); err != nil {
+			log.Printf("Unable to store certificate for %q as %s/%s.pem: %v", details.EC2InstanceID, ctx.FunctionName, details.EC2InstanceID, err)
 			return err
 		}
 
