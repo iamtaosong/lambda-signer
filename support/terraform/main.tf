@@ -126,3 +126,9 @@ CONFIG
     "kms_key_id" = "${aws_kms_key.key_arn}"
   }
 }
+
+resource "aws_s3_bucket_object" "config" {
+  bucket = "${var.function_name}"
+  key    = "config.json"
+  source = "${data.template_file.config.rendered}"
+}
