@@ -8,6 +8,7 @@
  *     aws_secret_access_key = "${var.aws_secret_access_key}"
  *     aws_region            = "eu-west-1"
  *
+ *     ca_cert       = "ca.pem"
  *     function_name = "signer-lve"
  *     filename      = "archive.zip"
  *   }
@@ -131,4 +132,10 @@ resource "aws_s3_bucket_object" "config" {
   bucket  = "${var.function_name}"
   key     = "config.json"
   content = "${template_file.config.rendered}"
+}
+
+resource "aws_s3_bucket_object" "ca" {
+  bucket = "${var.function_name}"
+  key    = "config.json"
+  source = "${var.ca_cert}"
 }

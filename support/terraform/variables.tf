@@ -13,6 +13,11 @@ variable "aws_region" {
   type        = "string"
 }
 
+variable "ca_cert" {
+  description = "Filename of CA cert to sign things with"
+  type        = "string"
+}
+
 variable "filename" {
   description = "Filename of lambda bundle"
   type        = "string"
