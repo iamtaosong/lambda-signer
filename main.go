@@ -37,6 +37,7 @@ func main() {
 
 		config := &lambda.Config{}
 		if err := config.ReadFromReader(configR); err != nil {
+			log.Printf("Unable to read config: %v", err)
 			return err
 		}
 
@@ -68,6 +69,7 @@ func main() {
 
 		caBytes, err := ioutil.ReadAll(body)
 		if err != nil {
+			log.Printf("Unable to read CA cert: %v", err)
 			return err
 		}
 

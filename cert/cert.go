@@ -9,6 +9,7 @@ import (
 	"crypto/x509/pkix"
 	"encoding/pem"
 	"io"
+	"log"
 	"math/big"
 	"net"
 	"time"
@@ -24,6 +25,7 @@ type Options struct {
 
 // GenerateX509KeyPair creates a X509 certificate
 func GenerateX509KeyPair(opts *Options) (io.Reader, error) {
+	log.Printf("Hosts: %v", opts.Hosts)
 	cert := GenerateCert(opts)
 	key, err := GenerateKey(opts.Bits)
 	if err != nil {
@@ -62,6 +64,7 @@ func GenerateCert(opts *Options) *x509.Certificate {
 
 	for _, h := range opts.Hosts {
 		if ip := net.ParseIP(h); ip != nil {
+			log.Printf("Using IP: %s", ip)
 			IPs = append(IPs, []byte(h))
 		} else {
 			hosts = append(hosts, h)
