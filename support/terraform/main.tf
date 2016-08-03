@@ -107,6 +107,7 @@ resource "aws_lambda_function" "signer" {
   handler          = "index.handle"
   runtime          = "nodejs4.3"
   source_code_hash = "${base64sha256(file(var.filename))}"
+  timeout          = 20
 }
 
 resource "aws_s3_bucket" "bucket" {
