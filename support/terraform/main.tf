@@ -25,11 +25,6 @@ resource "aws_kms_key" "key" {
   deletion_window_in_days = 7
 }
 
-resource "aws_kms_alias" "alias" {
-  name          = "alias/${var.function_name}-keys"
-  target_key_id = "${aws_kms_key.key.key_id}"
-}
-
 resource "aws_cloudwatch_event_target" "target" {
   rule = "${aws_cloudwatch_event_rule.rule.name}"
   arn  = "${aws_lambda_function.signer.arn}"
