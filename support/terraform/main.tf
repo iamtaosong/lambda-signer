@@ -129,12 +129,16 @@ CONFIG
 }
 
 resource "aws_s3_bucket_object" "config" {
+  depends_on = ["aws_s3_bucket.bucket"]
+
   bucket  = "${var.function_name}"
   key     = "config.json"
   content = "${template_file.config.rendered}"
 }
 
 resource "aws_s3_bucket_object" "ca" {
+  depends_on = ["aws_s3_bucket.bucket"]
+
   bucket = "${var.function_name}"
   key    = "ca.pem"
   source = "${var.ca_cert}"
