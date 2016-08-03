@@ -136,6 +136,6 @@ resource "aws_s3_bucket_object" "config" {
 
 resource "aws_s3_bucket_object" "ca" {
   bucket = "${var.function_name}"
-  key    = "config.json"
+  key    = "ca.pem"
   source = "${var.ca_cert}"
 }
