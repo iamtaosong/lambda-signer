@@ -23,6 +23,7 @@
 | ca_cert | Filename of CA cert to sign things with | - | yes |
 | filename | Filename of lambda bundle | - | yes |
 | function_name | Name of lambda bundle | - | yes |
+| vpc_id | VPC ID | - | yes |
 
 ## Outputs
 

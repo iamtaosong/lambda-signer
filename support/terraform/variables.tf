@@ -27,3 +27,8 @@ variable "function_name" {
   description = "Name of lambda bundle"
   type        = "string"
 }
+
+variable "vpc_id" {
+  description = "VPC ID"
+  type        = "string"
+}

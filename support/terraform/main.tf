@@ -106,9 +106,38 @@ resource "aws_lambda_function" "signer" {
   timeout          = 20
 }
 
+resource "aws_vpc_endpoint" "private-s3" {
+  vpc_id       = "${var.vpc_id}"
+  service_name = "com.amazonaws.${var.region}.s3"
+}
+
 resource "aws_s3_bucket" "bucket" {
   bucket = "${var.function_name}"
   acl    = "private"
+
+  policy = <<POLICY
+{
+	"Version": "2012-10-17",
+	"Id": "Policy1415115909153",
+	"Statement": [
+		{
+			"Sid": "Access-VPC",
+			"Effect": "Allow",
+			"Principal": "*",
+			"Action": "s3:GetObject",
+			"Resource": [
+				"arn:aws:s3:::${var.function_name}",
+				"arn:aws:s3:::${var.function_name}/*"
+			],
+			"Condition": {
+				"StringEquals": {
+					"aws:sourceVpc": "${var.vpc_id}"
+				}
+			}
+		}
+	]
+}
+POLICY
 }
 
 resource "template_file" "config" {
