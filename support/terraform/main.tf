@@ -1,4 +1,4 @@
-e**
+/**
  * Module usage:
  *
  *   module "signer" {
