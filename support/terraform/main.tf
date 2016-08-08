@@ -1,4 +1,4 @@
-/**
+e**
  * Module usage:
  *
  *   module "signer" {
@@ -108,7 +108,7 @@ resource "aws_lambda_function" "signer" {
 
 resource "aws_vpc_endpoint" "private-s3" {
   vpc_id       = "${var.vpc_id}"
-  service_name = "com.amazonaws.${var.region}.s3"
+  service_name = "com.amazonaws.${var.aws_region}.s3"
 }
 
 resource "aws_s3_bucket" "bucket" {
