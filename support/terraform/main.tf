@@ -106,11 +106,6 @@ resource "aws_lambda_function" "signer" {
   timeout          = 20
 }
 
-resource "aws_vpc_endpoint" "private-s3" {
-  vpc_id       = "${var.vpc_id}"
-  service_name = "com.amazonaws.${var.aws_region}.s3"
-}
-
 resource "aws_s3_bucket" "bucket" {
   bucket = "${var.function_name}"
   acl    = "private"
