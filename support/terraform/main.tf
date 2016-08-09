@@ -123,12 +123,7 @@ resource "aws_s3_bucket" "bucket" {
 			"Resource": [
 				"arn:aws:s3:::${var.function_name}",
 				"arn:aws:s3:::${var.function_name}/*"
-			],
-			"Condition": {
-				"StringEquals": {
-					"aws:sourceVpc": "${var.vpc_id}"
-				}
-			}
+			]
 		}
 	]
 }
